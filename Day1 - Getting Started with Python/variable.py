@@ -18,7 +18,7 @@ print(type(a)) # this will tell what data type is tored in this variavle or this
 print(type(d)) # this will tell what data type is tored in this variavle or this variable is of which data type
 
 #Casting Pythin Variable
-x = str(10) #
+x = str(10) 
 y = int(10)
 z = float(10)
 

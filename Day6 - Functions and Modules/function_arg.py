@@ -36,4 +36,3 @@ def power(base, exponent=2): #here second argument has been predefines for defau
 pow = power(100, 3)
 print('power - ', power(10, 3)) #here second argument is 3 so exponent will get the value 3
 print('power - ', power(10)) #here seconf argumrnt is not passed for the exponent will take default value as 2
-

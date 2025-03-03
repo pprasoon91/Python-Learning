@@ -1,13 +1,9 @@
 
-print('USING MATH FUNCTION')
+#USING MATH FUNCTION
 import math
 
 def fact(num):
     return math.factorial(num)
-
-a = int(input('Enter a number to get it\'s factorial: '))
-print(fact(a))
-
 
 
 #Other method - without using math library
@@ -18,4 +14,10 @@ def factorial(num):
         mul = mul*i
     return mul
 
+
+a = int(input('Enter a number to get it\'s factorial: '))
+print('OUTPUT USING MATH FUNCTION')
+print(fact(a))
+print('OUTPUT USING SELF LOGIC')
 print(factorial(a))
+

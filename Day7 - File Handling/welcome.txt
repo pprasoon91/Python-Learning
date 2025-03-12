@@ -1,0 +1,5 @@
+Hello Guys.
+Hope you are enjoying learning Python.
+Python makes file handling easy.
+Python is very easy language.
+Everyone must learn it

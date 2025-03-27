@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "metal-segment-454405-p7",
+  "private_key_id": "2686fff1c67040a7b6a197bf9d9b2d950118d4ff",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDhZKXCdOE/JLyl\nGeEhXpHEmPnxZrmYK75wRT8EpVKqbWrcy/PrcNG6rOFGHrB+w2YJU9ieKIibk/Pe\nNy4ayOS+EDKBi21NhGJM4lR3JSwhTj5NL4GFiy5s7hXrEjgFlE4J3wb9RnNAu4fz\nbtk5SeorSz9TDj1y6/yOiRT7aoq5bR6M5krnnxLIUjwhH4L2N2L6+bk41fCQ5irf\n4sp/iYDo7uK5yil/pZi4UoCJlghNyElyEp7VKnnw/vcBedXxsG5g2Jxlcil+2Z10\noPU/L2CMiforB7x/LKOaMTAKRqjuhMN7+Zop+9b+5VbPH5v75EVju5A5TPmuu0wl\nww1fJ+ZZAgMBAAECggEABL1Eay3gu3PgQm2ka+/p1gB8TJ4zDm8eCczk8zSu49iZ\nj9i7MWhNr/85B0EiMi+AOTeR1UUyK9OiY+SVDo5f7ptXKohAtT8bP4qzSWQ8VNtz\nsypfGXcjSTpU4ZIK9Zq9l4F2Fh7e/HLtBq+ozOagBZwckeMkOY2a1wbszGVm6G5H\n5OQ5zzjtOGXlu6tS676DG/Fs71Y/886RvS4S8g5owH6JVaS7OaUkBcVMKRXBNAYx\nunXtCuE8eFTWWSWOHooju0y05IZZW8QBOW1hqRqif50HXrX8SeBxzGlQhJuddbXH\nw0UUI7+XmuYYDzPs3dhsP8h4XzpVJ4Dd/2wFHJP6YQKBgQD0fXUl2+7bP/fej7u8\nexvj7y3ZehCOIpdqvSrquRX0e2KMkodwNYjXzeMCBr1HEyldhSN3ICJWygGtUQSO\n/uEKo3H0cjumuqU3/PPJqtlgX1ozENmTLDcP4tWVohbi4NOHbc7n58ay/6UGCu4e\nMdLu5k8cFq8CXOdYJ+1pIgIIeQKBgQDsAQm13RnkeqtSXt9pjUVuKivU8+PxuiMG\nH/te6zzd7fp38ho6FyKozChHgY3nv3NVqYxREcu4Uk1UV9cTJbG3bOlpJ7vC2/pQ\nWUKRYHdrn0Crphe21l9BfjJiBEdyZWyowrwMQg5faB7gc5JVsptZGVJyqKDSLDaM\n/18hBR0U4QKBgA/GzLltsMMbJJ6K/d1SwGD7/SRseQcC+mxb2poc6WrGT3yss+qs\nubDbS0vFLY+Zj/DF95znSO/6xxLtCHNFxTXPiDny6SCAKMstGnon+TD71jE3ZCLY\nFpGC3K90Ly/ivCOgFVrnnO3OC1MRf34ZTvg1imNQn2hyoEcTBIHlPOZZAoGBAOV1\nEOLgaLdLSV0Z3u/6KcI1gE5ZHou85SakW7tqzdAc/EQ4gKVwLwOdE6CKZtUmwFVO\nNp3vxnmck5DoorT8FjD31Gyn9Bc9177dOiqsdw+NU8xP/YiIHy9HKmdAL9Map63h\nQAJPCzhZvIOP+nwV3pKfWxkduNb/o74s4GnzVdYhAoGBAKaky8P6q+0nR6DhB7eU\ngNYX4p45LCIwAwv5fmow7CXmGi4Dr2bmFXvBURZoqpn4NfjaG73OOssVzv4PW/lx\nksVJyzli/X0Rtu6V+CrSzYFRIlYge/R/ecvEX1Wfq7w5be774Uh6doHjbSfgafqv\nQ1LVBamAcnYL2a+Zci4iB0/Q\n-----END PRIVATE KEY-----\n",
+  "client_email": "my-analytics-service@metal-segment-454405-p7.iam.gserviceaccount.com",
+  "client_id": "104386497177824051918",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/my-analytics-service%40metal-segment-454405-p7.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

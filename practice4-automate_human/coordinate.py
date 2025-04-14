@@ -12,3 +12,6 @@ while True:
     x, y = pyautogui.position()
 
     print(f"The coordinates of the current mouse position are: ({x}, {y})")
+
+    if "t" == input("press t to terminate"):
+        exit()

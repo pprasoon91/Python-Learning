@@ -1,7 +1,6 @@
 import requests
 from docx import Document
 from requests.auth import HTTPBasicAuth
-from docx.shared import WD_PARAGRAPH_ALIGNMENT
 
 # === CONFIGURATION ===
 
@@ -14,7 +13,6 @@ WP_API_BASE = 'https://www.dailytechdrip.com/wp-json/wp/v2'
 # Your WordPress login credentials
 WP_USERNAME = 'pprasoon91'
 WP_APP_PASSWORD = 'E4eH 2y2C 9gay m47e CFqR uUky'  # Generated from WP user profile
-
 
 # === SEO + CONTENT EXTRACTOR ===
 
@@ -34,7 +32,8 @@ def get_docx_with_seo(path):
     in_seo_block = False
     seo_lines = []
     
-    # We will create a list to hold the HTML content
+    # To keep track of list depth for nested lists
+    list_depth = 0
     html_content = []
 
     for para in doc.paragraphs:
@@ -51,22 +50,26 @@ def get_docx_with_seo(path):
         else:
             # Handle content
             if para.style.name.startswith('Heading'):
-                # Use the appropriate HTML tag based on the heading level
-                heading_level = int(para.style.name.split()[-1][0])  # Extracts the number (e.g., 'Heading 1' -> 1)
+                # Extract heading level (e.g., Heading 1, Heading 2, etc.)
+                heading_level = int(para.style.name.split()[-1][0])  # e.g., 'Heading 1' -> 1
                 html_content.append(f"<h{heading_level}>{line}</h{heading_level}>")
             elif para.style.name == 'List Bullet' or para.style.name == 'List Number':
                 # Handle bullet or numbered lists
-                if len(html_content) == 0 or not html_content[-1].startswith('<ul>'):
+                if list_depth == 0:
                     html_content.append("<ul>")
                 html_content.append(f"<li>{line}</li>")
-                continue  # Skip the default content handling for lists
+                list_depth += 1  # Increase list depth for nested items
+            elif para.style.name == 'List Bullet 2' or para.style.name == 'List Number 2':
+                # Handle nested bullet or numbered lists
+                html_content.append(f"<ul><li>{line}</li></ul>")
             else:
                 # Regular content paragraphs
                 html_content.append(f"<p>{line}</p>")
 
-    # Close any open list tags
-    if html_content and html_content[-1].startswith('<ul>'):
+    # Close any open list tags if necessary
+    while list_depth > 0:
         html_content.append("</ul>")
+        list_depth -= 1
 
     # Join the HTML content into a single string
     body = ''.join(html_content).strip()

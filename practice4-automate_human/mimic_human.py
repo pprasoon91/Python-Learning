@@ -7,7 +7,7 @@ from docx import Document
 
 # --- Configuration ---
 FIREFOX_URL = "https://www.chatgpt.com"
-TARGET_TEXT = "what is starlink and how it works"
+TARGET_TEXT = "todays latest global update"
 STARTUP_DELAY = 1  # Seconds to wait for ydotoold
 FIREFOX_OPEN_TIMEOUT = 20  # Increased timeout for Firefox
 YDOTool_RETRY_DELAY = 0.5  # Seconds to wait before retrying ydotool commands
@@ -91,62 +91,51 @@ def human_like_typing(text):
 
 import pyautogui
 import time
+import uinput
 
 def perform_copy_sequence():
-    """Performs the copy sequence with scrolling and visual detection"""
+    """Performs the copy sequence using pynput (no ydotool, no pyautogui)."""
     try:
-        # Get screen dimensions
-        screen_width, screen_height = pyautogui.size()
-        
-        # 1. Click at the center of the screen to ensure focus
-        center_x = screen_width // 2
-        center_y = screen_height // 2
-        pyautogui.click(center_x, center_y)
-        print(f"Clicked at screen center ({center_x}, {center_y})")
-        time.sleep(1)
-        
-        # 2. Press down arrow key for 6 seconds (with breaks to prevent key repeat issues)
-        print("Scrolling down with arrow keys...")
-        scroll_duration = 6  # seconds
-        start_time = time.time()
-        
-        while time.time() - start_time < scroll_duration:
-            run_ydotool_command(["ydotool", "key", "Down"])
-            time.sleep(0.2)  # Small delay between key presses
-        
-        # 3. Search for copy icon with multiple attempts
-        print("Searching for copy icon...")
-        copy_icon = None
-        attempts = 5
-        confidence = 0.7  # Adjust if needed
-        
-        for attempt in range(attempts):
-            try:
-                # Try to locate the copy icon
-                copy_icon = pyautogui.locateOnScreen('copy_icon.png', confidence=confidence)
-                if copy_icon:
-                    # Move to icon with human-like delay
-                    icon_center = pyautogui.center(copy_icon)
-                    pyautogui.moveTo(icon_center, duration=0.5)
-                    time.sleep(0.3)
-                    pyautogui.click()
-                    print(f"Found and clicked copy icon at attempt {attempt + 1}")
-                    time.sleep(1)
-                    return True
+        events = (
+            uinput.KEY_LEFTSHIFT,
+            uinput.KEY_TAB,
+            uinput.KEY_SPACE, 
+        )
+
+        # Create the virtual keyboard device
+        time.sleep(5)
+        with uinput.Device(events, name="My Virtual Keyboard") as device:
+            time.sleep(1)  # Let the system detect the new virtual keyboard
+            
+            for i in range(6):
+                print(f"Sending Shift+Tab ({i+1}/6)...")
+                # Press Shift
+                device.emit(uinput.KEY_LEFTSHIFT, 1)
+                time.sleep(0.05)
                 
-                print(f"Copy icon not found, attempt {attempt + 1}/{attempts}")
-                time.sleep(1)  # Wait before next attempt
+                # Press Tab
+                device.emit(uinput.KEY_TAB, 1)
+                time.sleep(0.05)
                 
-            except Exception as e:
-                print(f"Error searching for icon: {e}")
-                time.sleep(1)
-        
-        print("Failed to find copy icon after multiple attempts")
-        return False
+                # Release Tab
+                device.emit(uinput.KEY_TAB, 0)
+                time.sleep(0.05) 
+                
+                # Release Shift
+                device.emit(uinput.KEY_LEFTSHIFT, 0)
+                time.sleep(0.3)  # Small delay between sequences
+                
+            print("Sending Space to activate copy...")
+            device.emit_click(uinput.KEY_SPACE)
+            time.sleep(1)  # Wait a moment after the final press
+            
+        print("Copy sequence completed with uinput!")
+        return True
         
     except Exception as e:
-        print(f"Error in copy sequence: {e}")
+        print(f"Error in keyboard copy sequence: {e}")
         return False
+
     
 def save_response_to_word():
     """Gets clipboard content and saves to Word file"""

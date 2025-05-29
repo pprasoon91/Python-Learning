@@ -3,11 +3,13 @@ import time
 import os
 import signal
 import random
+import uinput
 from docx import Document
+from docx.shared import Pt
 
 # --- Configuration ---
 FIREFOX_URL = "https://www.chatgpt.com"
-TARGET_TEXT = "todays latest global update"
+TARGET_TEXT = "News today"
 STARTUP_DELAY = 1  # Seconds to wait for ydotoold
 FIREFOX_OPEN_TIMEOUT = 20  # Increased timeout for Firefox
 YDOTool_RETRY_DELAY = 0.5  # Seconds to wait before retrying ydotool commands
@@ -89,10 +91,6 @@ def human_like_typing(text):
         typed_so_far += char
     print(f"Finished typing: '{typed_so_far}'")
 
-import pyautogui
-import time
-import uinput
-
 def perform_copy_sequence():
     """Performs the copy sequence using pynput (no ydotool, no pyautogui)."""
     try:
@@ -103,11 +101,11 @@ def perform_copy_sequence():
         )
 
         # Create the virtual keyboard device
-        time.sleep(5)
+        time.sleep(4)
         with uinput.Device(events, name="My Virtual Keyboard") as device:
             time.sleep(1)  # Let the system detect the new virtual keyboard
             
-            for i in range(6):
+            for i in range(5):
                 print(f"Sending Shift+Tab ({i+1}/6)...")
                 # Press Shift
                 device.emit(uinput.KEY_LEFTSHIFT, 1)
@@ -138,16 +136,20 @@ def perform_copy_sequence():
 
     
 def save_response_to_word():
-    """Gets clipboard content and saves to Word file"""
     try:
-        # Get clipboard content (Linux)
-        clipboard_content = subprocess.check_output(["xclip", "-selection", "clipboard", "-o"], text=True)
-        
-        # Save to Word document
+        # Get clipboard content
+        clipboard_content = subprocess.check_output(
+            ["xclip", "-selection", "clipboard", "-o"], text=True
+        )
+
+        # Create a new Word document
         doc = Document()
-        doc.add_paragraph(clipboard_content)
-        doc.save(OUTPUT_WORD_FILE)
-        print(f"Response saved to {OUTPUT_WORD_FILE}")
+        doc.add_paragraph(clipboard_content)  # Just add it as a single paragraph
+
+        # Save the document
+        doc.save("output.docx")
+        print("Clipboard content saved to output.docx with no additional formatting.")
+
     except Exception as e:
         print(f"Error saving response: {e}")
 

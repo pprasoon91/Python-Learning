@@ -9,7 +9,7 @@ from docx.shared import Pt
 
 # --- Configuration ---
 FIREFOX_URL = "https://www.chatgpt.com"
-TARGET_TEXT = "News today"
+TARGET_TEXT = "trending science and technology news today"
 STARTUP_DELAY = 1  # Seconds to wait for ydotoold
 FIREFOX_OPEN_TIMEOUT = 20  # Increased timeout for Firefox
 YDOTool_RETRY_DELAY = 0.5  # Seconds to wait before retrying ydotool commands
@@ -101,11 +101,11 @@ def perform_copy_sequence():
         )
 
         # Create the virtual keyboard device
-        time.sleep(4)
+        time.sleep(1)
         with uinput.Device(events, name="My Virtual Keyboard") as device:
             time.sleep(1)  # Let the system detect the new virtual keyboard
             
-            for i in range(5):
+            for i in range(4):
                 print(f"Sending Shift+Tab ({i+1}/6)...")
                 # Press Shift
                 device.emit(uinput.KEY_LEFTSHIFT, 1)
@@ -134,24 +134,36 @@ def perform_copy_sequence():
         print(f"Error in keyboard copy sequence: {e}")
         return False
 
-    
+
+import subprocess
+import os
+import subprocess
+from markdown2docx import Markdown2Docx
+import os
+
+TEMP_MD_FILE = "/tmp/clipboard_content.md"
+
 def save_response_to_word():
     try:
         # Get clipboard content
-        clipboard_content = subprocess.check_output(
-            ["xclip", "-selection", "clipboard", "-o"], text=True
-        )
+        print("📋 Reading clipboard...")
+        plain_text = subprocess.check_output(['xclip', '-selection', 'clipboard', '-o'], text=True)
 
-        # Create a new Word document
-        doc = Document()
-        doc.add_paragraph(clipboard_content)  # Just add it as a single paragraph
+        # Save as temporary Markdown file
+        with open(TEMP_MD_FILE, 'w') as f:
+            f.write(plain_text)
 
-        # Save the document
-        doc.save("output.docx")
-        print("Clipboard content saved to output.docx with no additional formatting.")
+        # Use markdown2docx to convert it to a .docx
+        print("📄 Converting Markdown to Word using markdown2docx...")
+        md2docx = Markdown2Docx(TEMP_MD_FILE)
+        md2docx.convert()  # Parses the markdown
+        md2docx.save(OUTPUT_WORD_FILE)  # Saves the .docx
 
+        print(f"✅ Saved formatted document to {OUTPUT_WORD_FILE}")
     except Exception as e:
-        print(f"Error saving response: {e}")
+        print(f"❌ Error: {e}")
+
+
 
 # --- Main Script ---
 print("Starting ydotoold...")

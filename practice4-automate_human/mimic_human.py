@@ -9,7 +9,7 @@ from docx.shared import Pt
 
 # --- Configuration ---
 FIREFOX_URL = "https://www.chatgpt.com"
-TARGET_TEXT = "trending science and technology news today"
+TARGET_TEXT = "trending news today"
 STARTUP_DELAY = 1  # Seconds to wait for ydotoold
 FIREFOX_OPEN_TIMEOUT = 20  # Increased timeout for Firefox
 YDOTool_RETRY_DELAY = 0.5  # Seconds to wait before retrying ydotool commands
@@ -135,35 +135,30 @@ def perform_copy_sequence():
         return False
 
 
-import subprocess
-import os
-import subprocess
-from markdown2docx import Markdown2Docx
-import os
-
 TEMP_MD_FILE = "/tmp/clipboard_content.md"
 
 def save_response_to_word():
     try:
-        # Get clipboard content
-        print("📋 Reading clipboard...")
+        # Get clipboard content using xclip
+        print("Reading clipboard...")
         plain_text = subprocess.check_output(['xclip', '-selection', 'clipboard', '-o'], text=True)
 
-        # Save as temporary Markdown file
+        # Save clipboard content to a temporary Markdown file
         with open(TEMP_MD_FILE, 'w') as f:
             f.write(plain_text)
 
-        # Use markdown2docx to convert it to a .docx
-        print("📄 Converting Markdown to Word using markdown2docx...")
-        md2docx = Markdown2Docx(TEMP_MD_FILE)
-        md2docx.convert()  # Parses the markdown
-        md2docx.save(OUTPUT_WORD_FILE)  # Saves the .docx
+        # Convert Markdown to DOCX using Pandoc
+        print("Converting Markdown to Word using Pandoc...")
+        subprocess.run(['pandoc', TEMP_MD_FILE, '-o', OUTPUT_WORD_FILE], check=True)
 
-        print(f"✅ Saved formatted document to {OUTPUT_WORD_FILE}")
+        print(f"Saved formatted document to {OUTPUT_WORD_FILE}")
+    except subprocess.CalledProcessError as e:
+        print(f"Pandoc failed: {e}")
     except Exception as e:
-        print(f"❌ Error: {e}")
+        print(f"Error: {e}")
 
-
+# Run the function
+save_response_to_word()
 
 # --- Main Script ---
 print("Starting ydotoold...")
@@ -208,13 +203,40 @@ if firefox_process:
 
     # Clean up: Attempt to terminate Firefox
     print("Attempting to close Firefox...")
+    
+    events = (
+            uinput.KEY_LEFTALT,
+            uinput.KEY_F4,
+            )
+
+    # Create the virtual keyboard device
+    time.sleep(1)
+    with uinput.Device(events, name="My Virtual Keyboard") as device:
+        time.sleep(1)  # Let the system detect the new virtual keyboard
+        
+        print(f"Sending Alt+F4 to close Firefox...")
+        # Press Alt
+        device.emit(uinput.KEY_LEFTALT, 1)
+        time.sleep(0.05)
+        # Press F4
+        device.emit(uinput.KEY_F4, 1)
+        time.sleep(0.05)
+        # Release F4
+        device.emit(uinput.KEY_F4, 0)
+        time.sleep(0.05)
+        # Release Alt
+        device.emit(uinput.KEY_LEFTALT, 0)
+        time.sleep(0.05)
+        print("Sending Shift+Tab to navigate to the close button...")
+'''
     firefox_process.terminate()
     firefox_process.wait(timeout=5)  # Give it a few seconds to close
     if firefox_process.poll() is None:
         print("Firefox did not close gracefully, attempting to kill...")
         firefox_process.kill()
         firefox_process.wait()
-    print("Firefox closed.")
+'''
+print("Firefox closed.")
 
 # Clean up: Attempt to terminate ydotoold
 print("Attempting to stop ydotoold...")
